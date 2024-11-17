@@ -2,12 +2,12 @@
 //  CONFIRMATION.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 21/09/24.
+//  Created by Jignya Panchal on 21/09/24.
 //
 
 import UIKit
 
-class CONFIRMATION: UIViewController {
+class CONFIRMATION: UIViewController,ServerRequestDelegate {
     
     @IBOutlet weak var btnContinue: UIButton!
     @IBOutlet weak var btnChangeEmail: UIButton!
@@ -17,8 +17,10 @@ class CONFIRMATION: UIViewController {
     @IBOutlet weak var lblAppname: UILabel!
     @IBOutlet weak var lblDesc: UILabel!
 
+    @IBOutlet weak var txtCode: UITextField!
 
-    var strEmail : String!
+
+    var strEmail : String = ""
     
     override func viewDidLoad()
     {
@@ -36,7 +38,7 @@ class CONFIRMATION: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.navigationBar.isHidden = true
         
-        self.lblConfirmemail.text = "A confirmation email has been sent to " + strEmail
+        self.lblDesc.text = "A confirmation email has been sent to " + strEmail
 
     }
     
@@ -45,10 +47,33 @@ class CONFIRMATION: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    // MARK: ServerRequestDelegate
+    func isLoading(loading: Bool) {
+        if loading {
+            ImShSwiftLoader.shared.show("Please wait...")
+        } else {
+            ImShSwiftLoader.shared.hide()
+        }
+    }
+    
     // MARK: - button Actions
     
     @IBAction func btnResendClick(_ sender: UIButton) {
+        
+        let param = ["email":strEmail]
+        ServerRequest.shared.getApiData(urlString: "resend_code.php", param: param, delegate: self) { (result,response) in
+            
+            DispatchQueue.main.async {
+                
+                print(result)
+                
+                AJAlertController.initialization().showAlertWithOkButton(isBottomShow: false, aStrTitle: "Success", aStrMessage: "Code has been sent to your email address", aOKBtnTitle: "Okay") { index, title in
+                }
 
+            }
+        }
+        
     }
    
     @IBAction func btnchangeEmailClick(_ sender: UIButton) {
@@ -58,22 +83,46 @@ class CONFIRMATION: UIViewController {
     
     @IBAction func btnContinueClick(_ sender: UIButton)
     {
-        self.view.endEditing(true)
-        
-        let otp = self.storyboard?.instantiateViewController(withIdentifier: "LOCATION") as! LOCATION
-        self.navigationController?.pushViewController(otp, animated: true)
+        if txtCode.text?.count == 0
+        {
+            SnackBar.make(in: self.view, message: "Please enter code you have received in your email", duration: .lengthShort).show()
+            return
+        }
+        else {
+            
+            self.view.endEditing(true)
+//            self.verifyEmail(strEmail: self.strEmail, strCode: self.txtCode.text!)
+            
+            let otp = self.storyboard?.instantiateViewController(withIdentifier: "LOCATION") as! LOCATION
+            self.navigationController?.pushViewController(otp, animated: true)
 
+            
+        }
     }
     
    
     
     // MARK: - UITextField Delegates
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        
-       
         return true
         
     }
 
+    
+    //MARK: - Api call
+    
+    func verifyEmail(strEmail: String,strCode: String) {
+        
+        let param = ["email":strEmail,"code":strCode]
+        ServerRequest.shared.postApiData(urlString: "verified_code.php", params: param, delegate: self) { result in
+            
+            DispatchQueue.main.async {
+                
+                print(result)
+                let otp = self.storyboard?.instantiateViewController(withIdentifier: "LOCATION") as! LOCATION
+                self.navigationController?.pushViewController(otp, animated: true)
+            }
+        }
+        
+    }
 }

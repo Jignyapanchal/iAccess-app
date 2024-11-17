@@ -2,7 +2,7 @@
 //  SIGNUP.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 01/10/24.
+//  Created by Jignya Panchal on 01/10/24.
 //
 
 import UIKit
@@ -104,6 +104,11 @@ class SIGNUP: UIViewController,UITextFieldDelegate {
         else {
             
             self.view.endEditing(true)
+            
+            UserSettings.shared.userSignUpData.updateValue(self.txtUsername.text!, forKey: "username")
+            UserSettings.shared.userSignUpData.updateValue(self.txtFirstname.text!, forKey: "firstname")
+            UserSettings.shared.userSignUpData.updateValue(self.txtLastname.text!, forKey: "lastname")
+            
             let login = self.storyboard?.instantiateViewController(withIdentifier: "LOGINEMAIL") as! LOGINEMAIL
             self.navigationController?.pushViewController(login, animated: true)
 
@@ -124,5 +129,7 @@ class SIGNUP: UIViewController,UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
+    
+    
 
 }

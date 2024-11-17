@@ -2,9 +2,7 @@
 //  ImSh_Array.swift
 //  ImShExtensions
 //
-//  Created by Imran Mohammed on 10/21/18.
-//  Copyright © 2018 ImSh. All rights reserved.
-//
+
 
 import Foundation
 

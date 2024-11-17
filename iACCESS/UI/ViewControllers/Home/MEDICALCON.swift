@@ -2,7 +2,7 @@
 //  MEDICALCON.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 30/09/24.
+//  Created by Jignya Panchal on 30/09/24.
 //
 
 import UIKit
@@ -11,7 +11,8 @@ import SideMenu
 class MEDICALCON: UIViewController {
     
     var arrOptionList = [[String:Any]]()
-
+    var strLocation: String = ""
+    var strComeFrom: String = ""
 
     @IBOutlet weak var collList: UICollectionView!
     @IBOutlet weak var collLetter: UICollectionView!
@@ -43,8 +44,17 @@ class MEDICALCON: UIViewController {
         
         UserSettings.shared.arrLetters = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
         
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         
+        CommonFunction.shared.setFontFamily(for: self.view, andSubViews: true)
+
+        self.navigationController?.navigationBar.isHidden = true
+
         self.ImShSetLayout()
+        
+//        self.getAllMedicalCondition(strlocation: self.strLocation)
 
     }
     
@@ -56,6 +66,7 @@ class MEDICALCON: UIViewController {
         mainCatsHandler.categories = UserSettings.shared.arrCatList
         self.collList.setUp(delegate: mainCatsHandler, dataSource: mainCatsHandler, cellNibWithReuseId: MainCategoriesCell.className)
         
+        self.collList.reloadData()
         let width = ((self.collList.frame.width ) / 3) - 10
         self.conCollHeight.constant = (CGFloat((UserSettings.shared.arrCatList.count/3)) * (width + 15)) + 15
         self.collList.updateConstraintsIfNeeded()
@@ -74,6 +85,7 @@ class MEDICALCON: UIViewController {
                 if i == indexpath.item
                 {
                     dict["isSelected"] = "1"
+                    self.strLocation = dict["name"] as? String ?? ""
                 }
                 else
                 {
@@ -83,6 +95,8 @@ class MEDICALCON: UIViewController {
                 UserSettings.shared.arrCatList[i] = dict
             }
             
+//            self.getAllMedicalCondition(strlocation: self.strLocation) // to get all condition based on selected locatiom
+
             self.mainCatsHandler.categories = UserSettings.shared.arrCatList
             self.collList.reloadData()
         }
@@ -108,22 +122,14 @@ class MEDICALCON: UIViewController {
             
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "MEDICALCONDETAIL") as! MEDICALCONDETAIL
             vc.strLetter = UserSettings.shared.arrLetters[indexpath.item]
+            vc.strLocation = self.strLocation
+            vc.strcomeFrom = self.strComeFrom
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
 
     
-    override func viewWillAppear(_ animated: Bool) {
-        
-        CommonFunction.shared.setFontFamily(for: self.view, andSubViews: true)
-
-        self.navigationController?.navigationBar.isHidden = true
-
-    }
-
-    
-    // Mark: - Button action
+    //MARK: - Button action
     
     @IBAction func btnMenuClick(_ sender: UIButton) {
         
@@ -139,6 +145,59 @@ class MEDICALCON: UIViewController {
 
         self.navigationController?.popViewController(animated: true)
     }
+    
+    // MARK: ServerRequestDelegate
+    func isLoading(loading: Bool) {
+        if loading {
+            ImShSwiftLoader.shared.show("Please wait...")
+        } else {
+            ImShSwiftLoader.shared.hide()
+        }
+    }
+    
+    
+    //MARK: - Api call
+//    func getAllMedicalCondition(strlocation: String) {
+//
+//        let param = ["location":strLocation,"method":"All"]
+//        ServerRequest.shared.getApiData(urlString: "medical_conditions.php", param: param) { result in
+//
+//            DispatchQueue.main.async {
+//
+//                print(result)
+//                if result.count > 0
+//                {
+//                    let arrData = result
+//
+//                    for i in 0..<UserSettings.shared.arrSubCatList.count
+//                    {
+//                        var dict = UserSettings.shared.arrSubCatList[i]
+//                        dict["isEnabled"] = "0"
+//
+//                        let arr1 = arrData.filter {$0["category"] as? String == dict["category"] as? String}
+//                        if arr1.count > 0
+//                        {
+//                            dict["isEnabled"] = "1"
+//                        }
+//
+//                        UserSettings.shared.arrSubCatList[i] = dict
+//                    }
+//
+//                    self.optionHandler.categories = UserSettings.shared.arrSubCatList
+//                    self.collOptions.reloadData()
+//                }
+//                else
+//                {
+//                    UserSettings.shared.arrSubCatList = UserSettings.shared.arrSubCatListTemp
+//                    self.optionHandler.categories = UserSettings.shared.arrSubCatList
+//                    self.collOptions.reloadData()
+//
+//                    print("No record found")
+//                }
+//            }
+//        }
+//
+//    }
 
     
 

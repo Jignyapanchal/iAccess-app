@@ -10,7 +10,16 @@ class UserSettings: NSObject {
     static let shared = UserSettings()
     var tabbarController = CustomTabbarVC()
     var arrCatList = [[String:Any]]()
+    var arrCatListTemp = [[String:Any]]()  // clone of initial data to reset if needed
+
+    var arrSubCatList = [[String:Any]]()
+    var arrSubCatListTemp = [[String:Any]]()  // clone of initial data to reset if needed
+    
+    var arrSubCatMedicalList = [[String:Any]]()
     var arrLetters = [String]()
+    
+    var userSignUpData = [String:Any]()
+
 
 
     
@@ -69,36 +78,15 @@ class UserSettings: NSObject {
         return Bool.cached(key: "authUserIsLoggedIn")
     }
     
-    /// Auth
-    /// Bearer is the quote_id for guest
-    func getBearer() -> String {
-//        debugPrint("jignyabearerToken",UserDefaults.standard.string(forKey: "authBearerToken"))
-        return UserDefaults.standard.value(forKey: "authBearerToken") as? String  ?? ""
-    }
-    
-    func setBearer(token: String) {
+
+    func setUserId(userId: String) {
         let userDef = UserDefaults.standard
-        userDef.set(token, forKey: "authBearerToken")
+        userDef.set(userId, forKey: "userId")
         userDef.synchronize()
     }
-
-//    func getBaseUrl() -> String {
-//        return UserDefaults.standard.string(forKey: "apibaseurlEng") ?? ""
-//    }
-//    func getBaseArUrl() -> String {
-//        return UserDefaults.standard.string(forKey: "apibaseurlAr") ?? ""
-//    }
-//    func setBaseUrl(url: String) {
-//        let userDef = UserDefaults.standard
-//        userDef.set(url, forKey: "apibaseurlEng")
-//        userDef.synchronize()
-//    }
-//    func setBaseArUrl(url: String) {
-//        let userDef = UserDefaults.standard
-//        userDef.set(url, forKey: "apibaseurlAr")
-//        userDef.synchronize()
-//    }
-
+    func getUserId() -> String {
+        return UserDefaults.standard.value(forKey: "userId") as? String  ?? "12"
+    }
 
     func setUserCredential(strEmail: String, strPassword: String) {
         let userDef = UserDefaults.standard

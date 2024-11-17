@@ -2,7 +2,7 @@
 //  LEGAL.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 01/10/24.
+//  Created by Jignya Panchal on 01/10/24.
 //
 
 import UIKit
@@ -94,7 +94,7 @@ class LEGAL: UIViewController {
     }
 
     
-    // Mark: - Button action
+    // MARK: - Button action
     
     @IBAction func btnMenuClick(_ sender: UIButton) {
         

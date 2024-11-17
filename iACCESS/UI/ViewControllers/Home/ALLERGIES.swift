@@ -2,14 +2,12 @@
 //  ALLERGIES.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 24/10/24.
+//  Created by Jignya Panchal on 24/10/24.
 //
 
 import UIKit
 
-class ALLERGIES: UIViewController {
-    
-    var arrOptionList = [[String:Any]]()
+class ALLERGIES: UIViewController,ServerRequestDelegate {
 
     @IBOutlet weak var tblList: UITableView!
     @IBOutlet var conTblListHeight: NSLayoutConstraint!
@@ -25,6 +23,7 @@ class ALLERGIES: UIViewController {
     @IBOutlet var btnMenu: UIButton!
     @IBOutlet var btnBack: UIButton!
     
+    @IBOutlet var lblNorecord: UILabel!
 
     
     // MARK:- PRIVATE
@@ -34,10 +33,9 @@ class ALLERGIES: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-                    
-        arrOptionList = [["name":"Environmental allergies","image":"accessibility" ,"id":0,"description":"Smoke","isSelected":"0"],["name":"Food allergies","image":"vision" ,"id":1,"description":"Eggs","isSelected":"0"],["name":"Medical allergies","image":"vision" ,"id":2,"description":"Insulin","isSelected":"0"]]
-        
+        self.lblNorecord.tag = 26
         self.ImShSetLayout()
+        self.getAllUserAllergies()
 
     }
     
@@ -46,21 +44,13 @@ class ALLERGIES: UIViewController {
         viewUser.isHidden = false
 
         //Table
-        
-        detailListsHandler.arrList = arrOptionList
-                
-                
+                    
         self.tblList.setUpTable(delegate: detailListsHandler, dataSource: detailListsHandler, cellNibWithReuseId: AllergyCell.className)
-                
-        self.tblList.reloadData()
-        self.conTblListHeight.constant = CGFloat(self.arrOptionList.count * 80)
-        self.tblList.updateConstraintsIfNeeded()
-        self.tblList.layoutIfNeeded()
-
+            
         
         detailListsHandler.didSelect =  { (indexpath) in
             
-            var dict = self.arrOptionList[indexpath.row]
+            var dict = self.detailListsHandler.arrAllergies[indexpath.row]
 
             if dict["isSelected"] as? String == "1" {
                 dict["isSelected"] = "0"
@@ -68,9 +58,8 @@ class ALLERGIES: UIViewController {
             else {
                 dict["isSelected"] = "1"
             }
-            self.arrOptionList[indexpath.row] = dict
+            self.detailListsHandler.arrAllergies[indexpath.row] = dict
 
-            self.detailListsHandler.arrList = self.arrOptionList
             self.tblList.reloadData()
             self.conTblListHeight.constant = self.tblList.contentSize.height
             self.tblList.updateConstraintsIfNeeded()
@@ -92,7 +81,7 @@ class ALLERGIES: UIViewController {
     }
 
     
-    // Mark: - Button action
+    // MARK: - Button action
     
     @IBAction func btnMenuClick(_ sender: UIButton) {
         
@@ -107,6 +96,65 @@ class ALLERGIES: UIViewController {
     @IBAction func btnBackClick(_ sender: UIButton) {
 
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: ServerRequestDelegate
+    func isLoading(loading: Bool) {
+        if loading {
+            ImShSwiftLoader.shared.show("Please wait...")
+        } else {
+            ImShSwiftLoader.shared.hide()
+        }
+    }
+    
+    //MARK: - Api call
+
+    func getAllUserAllergies() {
+        
+        let param = ["method":"allallergies","iaccess_id":UserSettings.shared.getUserId()]
+        ServerRequest.shared.getApiData(urlString: "myallergies.php", param: param, delegate: self) { (result,response) in
+            
+            DispatchQueue.main.async {
+                if result.count > 0
+                {
+                    var groupedItems: [[String: Any]] = []
+
+                    let tempGrouping = Dictionary(grouping: result) { $0["type"] as! String }
+                    for (type, items) in tempGrouping {
+                        let titles = items.compactMap { $0["title"] as? String }
+                        groupedItems.append(["type": type.capitalized, "titles": titles])
+                    }
+
+                    // Print the grouped format
+                    print(groupedItems)
+                                        
+                    self.tblList.isHidden = false
+                    self.lblNorecord.isHidden = true
+                    
+                    self.detailListsHandler.arrAllergies = groupedItems
+
+                    for i in 0..<self.detailListsHandler.arrAllergies.count {
+                        var dict = self.detailListsHandler.arrAllergies[i]
+                        dict["isSelected"] = "0"
+                        self.detailListsHandler.arrAllergies[i] = dict
+                    }
+
+                    self.tblList.reloadData()
+                    self.conTblListHeight.constant = CGFloat(self.detailListsHandler.arrAllergies.count * 80)
+                    self.tblList.updateConstraintsIfNeeded()
+                    self.tblList.layoutIfNeeded()
+
+                }
+                else
+                {
+                    self.tblList.isHidden = true
+                    self.lblNorecord.isHidden = false
+                    self.lblNorecord.text = String(format: "No data available")
+                    print("No record found")
+                }
+            }
+        }
+        
     }
 
     

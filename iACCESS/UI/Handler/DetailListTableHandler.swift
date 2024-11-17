@@ -11,6 +11,8 @@ class DetailListTableHandler : NSObject, UITableViewDelegate, UITableViewDataSou
     var arrList = [[String:Any]]()
     var strComefrom:String!
     var didSelect: ((IndexPath) -> Void)? = nil
+    var didBookmark: ((Int) -> Void)? = nil
+
     
     //MARK:- Tableview Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -25,15 +27,25 @@ class DetailListTableHandler : NSObject, UITableViewDelegate, UITableViewDataSou
         
         if strComefrom == "medical" {
             
-            cell.lblTitle.text = dict["name"] as? String
+            cell.lblTitle.text = dict["term"] as? String
             cell.viewimg.isHidden = true
             cell.viewDesc.isHidden = true
+            
+            if dict["isSelected"] as? String  == "1"
+            {
+                cell.btnBookmark.isSelected = true
+            }
+            else
+            {
+                cell.btnBookmark.isSelected = false
+            }
+
 
         }
         else if strComefrom == "dictionary" {
             
-            cell.lblTitle.text = dict["name"] as? String
-            cell.lblDesc.text = dict["description"] as? String
+            cell.lblTitle.text = dict["term"] as? String
+            cell.lblDesc.text = dict["definition"] as? String
             cell.viewimg.isHidden = true
             cell.btnBookmark.isHidden = true
             
@@ -51,8 +63,9 @@ class DetailListTableHandler : NSObject, UITableViewDelegate, UITableViewDataSou
         }
         else
         {
-            cell.lblTitle.text = dict["name"] as? String
-            cell.img.image = UIImage(named: dict["image"] as? String ?? "")
+            cell.lblTitle.text = dict["accommodation"] as? String
+            
+            cell.img.sd_setImage(with:(dict["image"] as? String ?? "").getURL, placeholderImage: UIImage(named: "logo"))
             cell.lblDesc.text = dict["description"] as? String
             
             if dict["isSelected"] as? String  == "1"
@@ -91,9 +104,20 @@ class DetailListTableHandler : NSObject, UITableViewDelegate, UITableViewDataSou
     @objc func btnBookmarkClick(_ sender: Any) {
         
         let btn = sender as! UIButton
-        btn.isSelected = !btn.isSelected
-        
+
+        if UserSettings.shared.isLoggedIn()
+        {
+//            btn.isSelected = !btn.isSelected
+            didBookmark?(btn.tag)
+        }
+        else
+        {
+            AJAlertController.initialization().showAlertWithOkButton(isBottomShow: false, aStrTitle: "Sorry", aStrMessage: "Please login to access this feature", aOKBtnTitle: "Okay") { index, title in
+            }
+        }
     }
+    
+    
     
 }
 

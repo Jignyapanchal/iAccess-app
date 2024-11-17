@@ -2,7 +2,7 @@
 //  MYACCOMMODATION.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 24/10/24.
+//  Created by Jignya Panchal on 24/10/24.
 //
 
 import UIKit
@@ -32,9 +32,7 @@ class MYACCOMMODATION: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        UserSettings.shared.arrCatList = [["name":"Home","image":"home","id":0,"isSelected":"0"],["name":"Work","image":"school","id":1,"isSelected":"0"],["name":"School","image":"backpack","id":2,"isSelected":"0"],["name":"Transit","image":"trasit","id":3,"isSelected":"0"],["name":"Medical","image":"hospital","id":4,"isSelected":"0"],["name":"All","image":"planet" ,"id":5,"isSelected":"0"]]
-        
+                
         arrOptionList = [["name":"Accessibility Category","image":"accessibility" ,"id":0],["name":"Medical Conditions","image":"caduceus" ,"id":1],["name":"Allergies","image":"myallergies.png" ,"id":2]]
         
         self.ImShSetLayout()
@@ -43,7 +41,7 @@ class MYACCOMMODATION: UIViewController {
     
     override func ImShSetLayout()
     {
-        viewUser.isHidden = true
+//        viewUser.isHidden = true
         
         // collection
         mainCatsHandler.categories = UserSettings.shared.arrCatList
@@ -103,11 +101,15 @@ class MYACCOMMODATION: UIViewController {
                     if indexpath.row == 0
                     {
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "ACCOMMODATION") as! ACCOMMODATION
+                        vc.strLocation = (arr1[0]["name"] as? String)?.lowercased() ?? ""
+                        vc.strComeFrom = "myaccommodation"
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                     else if indexpath.row == 1
                     {
                         let vc = self.storyboard?.instantiateViewController(withIdentifier: "MEDICALCON") as! MEDICALCON
+                        vc.strLocation = (arr1[0]["name"] as? String)?.lowercased() ?? ""
+                        vc.strComeFrom = "myaccommodation"
                         self.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
@@ -117,8 +119,6 @@ class MYACCOMMODATION: UIViewController {
                 let vc = self.storyboard?.instantiateViewController(withIdentifier: "ALLERGIES") as! ALLERGIES
                 self.navigationController?.pushViewController(vc, animated: true)
             }
-           
-            
         }
         
         self.conTblListHeight.constant = CGFloat(arrOptionList.count * 70)
@@ -138,11 +138,10 @@ class MYACCOMMODATION: UIViewController {
     }
 
     
-    //Mark: - Button action
+    //MARK: - Button action
     
     @IBAction func btnBackClick(_ sender: UIButton) {
 
-        UserSettings.shared.setLoggedIn()
         let storyboard = UIStoryboard.init(name: "Dashboard", bundle: nil)
         let navigationController = storyboard.instantiateViewController(withIdentifier: "nav") as! UINavigationController
         AppDelegate.shared.window?.rootViewController = navigationController

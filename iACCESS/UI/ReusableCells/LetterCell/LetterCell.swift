@@ -2,7 +2,7 @@
 //  LetterCell.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 30/09/24.
+//  Created by Jignya Panchal on 30/09/24.
 //
 
 import UIKit

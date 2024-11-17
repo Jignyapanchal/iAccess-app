@@ -1,10 +1,7 @@
 //
 //  ImShCustomTabBar.swift
-//  Omahat
 //
-//  Created by Imran Mohammed on 5/17/19.
-//  Copyright © 2019 ImSh. All rights reserved.
-//
+
 
 import UIKit
 

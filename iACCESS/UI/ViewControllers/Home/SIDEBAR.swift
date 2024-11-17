@@ -2,7 +2,7 @@
 //  SIDEBAR.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 24/10/24.
+//  Created by Jignya Panchal on 24/10/24.
 //
 
 import UIKit
@@ -53,12 +53,21 @@ class SIDEBAR: UIViewController {
         
         listHandler.didSelect =  { (indexpath) in
             
-            if UserSettings.shared.isLoggedIn() && indexpath.row == 0 {
-                
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "MYACCOUNT") as! MYACCOUNT
-//                vc.strcomeFrom = "side"
-                self.navigationController?.pushViewController(vc, animated: true)
+            if UserSettings.shared.isLoggedIn()
+            {
+                if indexpath.row == 0 {
+                    
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "MYACCOUNT") as! MYACCOUNT
+    //                vc.strcomeFrom = "side"
+                    self.navigationController?.pushViewController(vc, animated: true)
+                    
+                }
+                else if indexpath.row == 1 {
+                    
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "MYACCOMMODATION") as! MYACCOMMODATION
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
                 
             } else if indexpath.row == 0 {
                 
@@ -66,22 +75,17 @@ class SIDEBAR: UIViewController {
                 let vc = storyboard.instantiateViewController(withIdentifier: "LOGIN") as! LOGIN
                 vc.strcomeFrom = "side"
                 self.navigationController?.pushViewController(vc, animated: true)
-            }
-            
-            else if indexpath.row == 1 {
+                
+            } else if indexpath.row == 1 {
                 
             } else if indexpath.row == 2 {
                 
             }
-            else if indexpath.row == 3
-            {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "LEGAL") as! LEGAL
-                self.navigationController?.pushViewController(vc, animated: true)
+            else if indexpath.row == 3 {
+               
             }
-            else if indexpath.row == 4
-            {
-                let vc = self.storyboard?.instantiateViewController(withIdentifier: "DICTIONARY") as! DICTIONARY
-                self.navigationController?.pushViewController(vc, animated: true)
+            else if indexpath.row == 4 {
+                
             }
             
         }

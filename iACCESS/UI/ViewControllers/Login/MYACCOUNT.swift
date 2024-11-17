@@ -2,7 +2,7 @@
 //  MYACCOUNT.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 24/10/24.
+//  Created by Jignya Panchal on 24/10/24.
 //
 
 import UIKit
