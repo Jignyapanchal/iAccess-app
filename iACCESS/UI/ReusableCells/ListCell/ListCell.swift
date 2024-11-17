@@ -1,6 +1,5 @@
 //
 //  TitleCell.swift
-//  HomeFinch-CustomerApp
 //
 //  Created by Jignya Panchal on 04/12/20.
 //

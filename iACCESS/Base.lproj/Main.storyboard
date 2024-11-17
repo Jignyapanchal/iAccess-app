@@ -1453,7 +1453,7 @@ Easily refer to your saved content in your profile.</string>
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yiW-LG-nuD">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="718"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="796"/>
                                         <subviews>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Q41-7E-8R0">
                                                 <rect key="frame" x="0.0" y="50" width="393" height="80"/>
@@ -1493,7 +1493,7 @@ Easily refer to your saved content in your profile.</string>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="v1T-ds-Cnr">
                                                 <rect key="frame" x="0.0" y="160" width="393" height="100"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" tag="26" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm your email" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xb4-P4-vpX">
+                                                    <label opaque="NO" userInteractionEnabled="NO" tag="26" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm your email" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xb4-P4-vpX">
                                                         <rect key="frame" x="20" y="0.0" width="353" height="100"/>
                                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="22"/>
                                                         <nil key="textColor"/>
@@ -1509,7 +1509,7 @@ Easily refer to your saved content in your profile.</string>
                                                     <constraint firstAttribute="height" constant="100" id="teT-Pv-J9h"/>
                                                 </constraints>
                                             </view>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbi-XL-hPt">
+                                            <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mbi-XL-hPt">
                                                 <rect key="frame" x="0.0" y="260" width="393" height="200"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="esC-SC-k4I">
@@ -1540,8 +1540,50 @@ user@email.com</string>
                                                     <constraint firstItem="esC-SC-k4I" firstAttribute="leading" secondItem="mbi-XL-hPt" secondAttribute="leading" constant="20" symbolic="YES" id="zHG-o1-fuC"/>
                                                 </constraints>
                                             </view>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8kF-e5-iET">
+                                                <rect key="frame" x="0.0" y="468" width="393" height="80"/>
+                                                <subviews>
+                                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5p2-hG-qc5">
+                                                        <rect key="frame" x="96.666666666666686" y="8" width="200" height="64"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="200" id="nX1-ut-uhj"/>
+                                                        </constraints>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" red="0.3294117647" green="0.34901960780000002" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="0.5"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                    </view>
+                                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Confirmation code" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3GV-Fb-Ozx">
+                                                        <rect key="frame" x="96.666666666666686" y="33" width="200" height="27"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                        <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="xpK-Fd-345" id="alp-bY-4kD"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="80" id="5Cd-tQ-EiB"/>
+                                                    <constraint firstItem="5p2-hG-qc5" firstAttribute="centerX" secondItem="8kF-e5-iET" secondAttribute="centerX" id="Ebl-wM-a8s"/>
+                                                    <constraint firstItem="3GV-Fb-Ozx" firstAttribute="top" secondItem="8kF-e5-iET" secondAttribute="top" constant="33" id="awY-f5-QJJ"/>
+                                                    <constraint firstAttribute="bottom" secondItem="5p2-hG-qc5" secondAttribute="bottom" constant="8" id="czI-75-Z1h"/>
+                                                    <constraint firstItem="5p2-hG-qc5" firstAttribute="top" secondItem="8kF-e5-iET" secondAttribute="top" constant="8" id="m0b-6a-4zz"/>
+                                                    <constraint firstItem="3GV-Fb-Ozx" firstAttribute="leading" secondItem="5p2-hG-qc5" secondAttribute="leading" id="pNB-ry-b6n"/>
+                                                    <constraint firstAttribute="bottom" secondItem="3GV-Fb-Ozx" secondAttribute="bottom" constant="20" id="qSN-cd-yke"/>
+                                                    <constraint firstItem="3GV-Fb-Ozx" firstAttribute="trailing" secondItem="5p2-hG-qc5" secondAttribute="trailing" id="xH7-CO-r0M"/>
+                                                </constraints>
+                                            </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyE-Ed-rJU">
-                                                <rect key="frame" x="20" y="500" width="353" height="75"/>
+                                                <rect key="frame" x="20" y="578" width="353" height="75"/>
                                                 <subviews>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e8C-Ct-JpM">
                                                         <rect key="frame" x="20" y="5" width="313" height="65"/>
@@ -1584,7 +1626,7 @@ user@email.com</string>
                                                 </constraints>
                                             </view>
                                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kTS-39-ha9">
-                                                <rect key="frame" x="20" y="583" width="353" height="75"/>
+                                                <rect key="frame" x="20" y="661" width="353" height="75"/>
                                                 <subviews>
                                                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wTu-8I-sz0">
                                                         <rect key="frame" x="20" y="5" width="313" height="65"/>
@@ -1633,7 +1675,7 @@ user@email.com</string>
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" tag="25" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SeI-WN-7hK">
-                                                <rect key="frame" x="129.66666666666666" y="675" width="133.99999999999997" height="35"/>
+                                                <rect key="frame" x="129.66666666666666" y="753" width="133.99999999999997" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="35" id="4Pc-2F-Ncf"/>
                                                 </constraints>
@@ -1649,11 +1691,14 @@ user@email.com</string>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstItem="gyE-Ed-rJU" firstAttribute="top" secondItem="8kF-e5-iET" secondAttribute="bottom" constant="30" id="0JQ-Hn-Gh1"/>
+                                            <constraint firstAttribute="trailing" secondItem="8kF-e5-iET" secondAttribute="trailing" id="1FD-7r-XJ6"/>
                                             <constraint firstItem="kTS-39-ha9" firstAttribute="leading" secondItem="yiW-LG-nuD" secondAttribute="leading" constant="20" id="8kb-m3-adh"/>
                                             <constraint firstAttribute="trailing" secondItem="Q41-7E-8R0" secondAttribute="trailing" id="Csj-wj-Ovg"/>
                                             <constraint firstAttribute="bottom" secondItem="SeI-WN-7hK" secondAttribute="bottom" constant="8" id="Es4-3Z-fu8"/>
                                             <constraint firstItem="mbi-XL-hPt" firstAttribute="top" secondItem="v1T-ds-Cnr" secondAttribute="bottom" id="Kdq-He-IEx"/>
                                             <constraint firstItem="Q41-7E-8R0" firstAttribute="top" secondItem="yiW-LG-nuD" secondAttribute="top" constant="50" id="LtG-Eo-Ej0"/>
+                                            <constraint firstItem="8kF-e5-iET" firstAttribute="leading" secondItem="yiW-LG-nuD" secondAttribute="leading" id="OK2-zl-4Qj"/>
                                             <constraint firstAttribute="trailing" secondItem="v1T-ds-Cnr" secondAttribute="trailing" id="OuW-pG-YqJ"/>
                                             <constraint firstAttribute="trailing" secondItem="kTS-39-ha9" secondAttribute="trailing" constant="20" id="RuW-y0-Skg"/>
                                             <constraint firstItem="gyE-Ed-rJU" firstAttribute="leading" secondItem="yiW-LG-nuD" secondAttribute="leading" constant="20" id="VQb-Ag-Fzx"/>
@@ -1665,7 +1710,7 @@ user@email.com</string>
                                             <constraint firstAttribute="trailing" secondItem="mbi-XL-hPt" secondAttribute="trailing" id="kkx-0l-rxm"/>
                                             <constraint firstItem="v1T-ds-Cnr" firstAttribute="top" secondItem="Q41-7E-8R0" secondAttribute="bottom" constant="30" id="nEn-W8-dzK"/>
                                             <constraint firstAttribute="bottom" secondItem="kTS-39-ha9" secondAttribute="bottom" constant="60" id="oUU-6r-jtz"/>
-                                            <constraint firstItem="gyE-Ed-rJU" firstAttribute="top" secondItem="mbi-XL-hPt" secondAttribute="bottom" constant="40" id="sjv-m6-ruI"/>
+                                            <constraint firstItem="8kF-e5-iET" firstAttribute="top" secondItem="mbi-XL-hPt" secondAttribute="bottom" constant="8" id="vmO-Ug-Emq"/>
                                             <constraint firstItem="SeI-WN-7hK" firstAttribute="centerX" secondItem="yiW-LG-nuD" secondAttribute="centerX" id="zI3-CR-Lhz"/>
                                         </constraints>
                                     </view>
@@ -1695,6 +1740,7 @@ user@email.com</string>
                         <outlet property="lblAppname" destination="Gep-7G-aZG" id="Owd-e3-8jP"/>
                         <outlet property="lblConfirmemail" destination="xb4-P4-vpX" id="ViF-l7-VoT"/>
                         <outlet property="lblDesc" destination="esC-SC-k4I" id="JHJ-nx-0Xc"/>
+                        <outlet property="txtCode" destination="3GV-Fb-Ozx" id="Jda-Yb-70G"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RbC-cX-Mdh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

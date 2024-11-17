@@ -2,7 +2,7 @@
 //  AllergyListHandler.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 24/10/24.
+//  Created by Jignya Panchal on 24/10/24.
 //
 
 import Foundation
@@ -12,23 +12,25 @@ import UIKit
 class AllergyListHandler : NSObject, UITableViewDelegate, UITableViewDataSource
 {
     
-    var arrList = [[String:Any]]()
+    var arrAllergies = [[String: Any]]()
+
     var strComefrom:String!
     var didSelect: ((IndexPath) -> Void)? = nil
     
     //MARK:- Tableview Methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrList.count
+        return arrAllergies.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AllergyCell.className, for: indexPath) as! AllergyCell
         
-        let dict = arrList[indexPath.row]
+        let dict = arrAllergies[indexPath.row]
         
         
-        cell.lblTitle.text = dict["name"] as? String
-        cell.lblDesc.text = dict["description"] as? String
+        cell.lblTitle.text = (dict["type"] as? String ?? "").capitalized + " allergies"
+        let commaSeparatedTitles = (dict["titles"] as? [String] ?? []).joined(separator: ", ")
+        cell.lblDesc.text = commaSeparatedTitles
         
         if dict["isSelected"] as? String  == "1"
         {

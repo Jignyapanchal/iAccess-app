@@ -23,6 +23,10 @@ class SPLASH: UIViewController {
         
         btnYes.titleLabel?.font =  UIFont.roboto(size: 17, weight: .Medium)
         btnOkay.titleLabel?.font =  UIFont.roboto(size: 17, weight: .Medium)
+        
+        
+//        ServerRequest.shared.getApiData(urlString: "accommodation.php", param: [:]) { result in
+//        }
                 
     }
     
@@ -59,6 +63,6 @@ class SPLASH: UIViewController {
         self.navigationController?.pushViewController(login, animated: true)
         
     }
-    
-    
+        
 }
+

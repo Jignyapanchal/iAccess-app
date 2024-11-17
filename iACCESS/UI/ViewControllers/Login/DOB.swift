@@ -2,7 +2,7 @@
 //  DOB.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 07/10/24.
+//  Created by Jignya Panchal on 07/10/24.
 //
 
 import UIKit
@@ -94,6 +94,8 @@ class DOB: UIViewController {
         }
         else
         {
+            
+            UserSettings.shared.userSignUpData.updateValue(self.lblSelecteddate.text ?? "", forKey: "birthday")
             let select = self.storyboard?.instantiateViewController(withIdentifier: "SelectAllergy") as! SelectAllergy
             select.strcomeFrom = "food"
             self.navigationController?.pushViewController(select, animated: true)

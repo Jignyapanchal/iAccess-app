@@ -193,6 +193,8 @@ class CommonFunction: NSObject {
         {
             let txt1 = view as? UITextField
             
+            txt1?.tintColor = UIColor.darkGray
+            
             if let aSize = txt1?.font?.pointSize
             {
                 if txt1?.tag == 25

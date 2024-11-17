@@ -4,24 +4,24 @@
 
 import UIKit
 
-class LOGIN: UIViewController ,UITextFieldDelegate {
+class LOGIN: UIViewController ,UITextFieldDelegate,ServerRequestDelegate {
     
     @IBOutlet weak var btnNext: UIButton!
     @IBOutlet var btnback: UIButton!
     
     @IBOutlet var btnDontHaveAccount: UIButton!
-
-
+    
+    
     @IBOutlet weak var txtUsername: UITextField!
     @IBOutlet weak var txtPassword: UITextField!
-
+    
     @IBOutlet weak var lblAppname: UILabel!
     @IBOutlet weak var lblUsername: UILabel!
     @IBOutlet weak var lblPassword: UILabel!
     
     var strcomeFrom: String = ""
-
-
+    
+    
     
     override func viewDidLoad()
     {
@@ -33,7 +33,7 @@ class LOGIN: UIViewController ,UITextFieldDelegate {
         btnNext.titleLabel?.font =  UIFont.roboto(size: 17, weight: .Medium)
         btnback.titleLabel?.font =  UIFont.roboto(size: 17, weight: .Medium)
         btnDontHaveAccount.titleLabel?.font =  UIFont.roboto(size: 17, weight: .Medium)
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +44,7 @@ class LOGIN: UIViewController ,UITextFieldDelegate {
         
         self.lblUsername.setLabelValue(" Username * ")
         self.lblPassword.setLabelValue(" Password * ")
-
+        
     }
     
     
@@ -55,14 +55,14 @@ class LOGIN: UIViewController ,UITextFieldDelegate {
     // MARK: - button Actions
     
     @IBAction func btnBackClick(_ sender: UIButton) {
-
+        
         if strcomeFrom == "side"{
             self.view.endEditing(true)
             let storyboard = UIStoryboard.init(name: "Dashboard", bundle: nil)
             let navigationController = storyboard.instantiateViewController(withIdentifier: "nav") as! UINavigationController
             AppDelegate.shared.window?.rootViewController = navigationController
             AppDelegate.shared.window?.makeKeyAndVisible()
-
+            
         } else
         {
             self.navigationController?.popViewController(animated: true)
@@ -75,7 +75,7 @@ class LOGIN: UIViewController ,UITextFieldDelegate {
         if strcomeFrom == "side"{
             let login = self.storyboard?.instantiateViewController(withIdentifier: "SIGNUP") as! SIGNUP
             self.navigationController?.pushViewController(login, animated: true)
-
+            
         } else
         {
             self.navigationController?.popViewController(animated: true)
@@ -90,33 +90,28 @@ class LOGIN: UIViewController ,UITextFieldDelegate {
         {
             SnackBar.make(in: self.view, message: "Please enter username", duration: .lengthShort).show()
             return
-
+            
         }
         else if txtPassword.text?.count == 0
         {
             SnackBar.make(in: self.view, message: "Please enter password", duration: .lengthShort).show()
             return
-
-        }
-       
-        else {
+            
+        } else {
             
             self.view.endEditing(true)
-            UserSettings.shared.setLoggedIn()
-            let storyboard = UIStoryboard.init(name: "Dashboard", bundle: nil)
-            let navigationController = storyboard.instantiateViewController(withIdentifier: "nav") as! UINavigationController
-            AppDelegate.shared.window?.rootViewController = navigationController
-            AppDelegate.shared.window?.makeKeyAndVisible()
+            
+            self.loginUser(strUsername: self.txtUsername.text!, strPassword: self.txtPassword.text!)
         }
     }
     
-   
+    
     
     // MARK: - UITextField Delegates
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         
-       
+        
         return true
         
     }
@@ -124,7 +119,36 @@ class LOGIN: UIViewController ,UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
     }
-
+    
+    // MARK: ServerRequestDelegate
+    func isLoading(loading: Bool) {
+        if loading {
+            ImShSwiftLoader.shared.show("Please wait...")
+        } else {
+            ImShSwiftLoader.shared.hide()
+        }
+    }
+    
+    //MARK: - Api call
+    
+    func loginUser(strUsername: String,strPassword: String) {
+        
+        let param = ["username":strUsername,"password":strPassword]
+        ServerRequest.shared.postApiData(urlString: "signin.php", params: param, delegate: self) { result in
+            
+            DispatchQueue.main.async {
+                
+                print(result)
+                UserSettings.shared.setLoggedIn()
+                let storyboard = UIStoryboard.init(name: "Dashboard", bundle: nil)
+                let navigationController = storyboard.instantiateViewController(withIdentifier: "nav") as! UINavigationController
+                AppDelegate.shared.window?.rootViewController = navigationController
+                AppDelegate.shared.window?.makeKeyAndVisible()
+            }
+        }
+        
+    }
+    
 }
 
 extension UILabel {
@@ -134,9 +158,9 @@ extension UILabel {
         let range = (textName as NSString).range(of: "*")
         let attributedString = NSMutableAttributedString(string:textName)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
-
-            //Apply to the label
+        
+        //Apply to the label
         self.attributedText = attributedString;
-
+        
     }
 }

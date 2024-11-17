@@ -2,7 +2,7 @@
 //  LOCATION.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 21/09/24.
+//  Created by Jignya Panchal on 21/09/24.
 //
 
 import UIKit
@@ -61,14 +61,13 @@ class LOCATION: UIViewController, UITextFieldDelegate {
     {
         self.view.endEditing(true)
         
-        if txtCity.text?.count == 0
-        {
-          
+        if txtCity.text?.count == 0 {
         }
-        else if txtCountry.text?.count == 0
-        {
-            
+        else if txtCountry.text?.count == 0{
         }
+        
+        UserSettings.shared.userSignUpData.updateValue(self.txtCity.text ?? "", forKey: "city")
+        UserSettings.shared.userSignUpData.updateValue(self.txtCountry.text ?? "", forKey: "country")
         
         let select = self.storyboard?.instantiateViewController(withIdentifier: "DOB") as! DOB
         self.navigationController?.pushViewController(select, animated: true)

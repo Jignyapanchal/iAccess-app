@@ -2,13 +2,13 @@
 //  LOGINEMAIL.swift
 //  iACCESS
 //
-//  Created by Aakash Panchal on 21/09/24.
+//  Created by Jignya Panchal on 21/09/24.
 //
 
 import UIKit
 import ImShExtensions
 
-class LOGINEMAIL: UIViewController,UITextFieldDelegate {
+class LOGINEMAIL: UIViewController,UITextFieldDelegate, ServerRequestDelegate {
     
     @IBOutlet weak var btnNext: UIButton!
     @IBOutlet var btnback: UIButton!
@@ -92,8 +92,14 @@ class LOGINEMAIL: UIViewController,UITextFieldDelegate {
         else {
          
             self.view.endEditing(true)
+            
+            UserSettings.shared.userSignUpData.updateValue(self.txtEmail.text!, forKey: "email")
+            UserSettings.shared.userSignUpData.updateValue(self.txtConfirmPW.text!, forKey: "password")
+            
+//            self.sendVerificationCode(strEmail: self.txtEmail.text!)
+
             let vc = self.storyboard?.instantiateViewController(withIdentifier: "CONFIRMATION") as! CONFIRMATION
-            vc.strEmail = self.txtEmail.text
+            vc.strEmail = self.txtEmail.text ?? ""
             self.navigationController?.pushViewController(vc, animated: true)
 
         }
@@ -104,15 +110,45 @@ class LOGINEMAIL: UIViewController,UITextFieldDelegate {
     
     // MARK: - UITextField Delegates
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        
-       
         return true
         
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+    }
+    
+    // MARK: ServerRequestDelegate
+    func isLoading(loading: Bool) {
+        if loading {
+            ImShSwiftLoader.shared.show("Please wait...")
+        } else {
+            ImShSwiftLoader.shared.hide()
+        }
+    }
+    
+    //MARK: - APi call
+    
+    func sendVerificationCode(strEmail:String)
+    {
+        let param = ["email":strEmail]
+        ServerRequest.shared.postApiData(urlString: "sendVerificationCode.php", params: param, delegate: self) { result in
+            
+            DispatchQueue.main.async {
+                
+                print(result)
+                
+                AJAlertController.initialization().showAlertWithOkButton(isBottomShow: false, aStrTitle: "Success", aStrMessage: "Code has been sent to your email address", aOKBtnTitle: "Okay") { index, title in
+                    
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "CONFIRMATION") as! CONFIRMATION
+                    vc.strEmail = self.txtEmail.text ?? ""
+                    self.navigationController?.pushViewController(vc, animated: true)
+
+                }
+
+            }
+        }
+        
     }
 
 }
